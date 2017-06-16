@@ -61,4 +61,3 @@ RegExp.prototype.clone = function() {
     flags += pattern.multiline ? 'm' : '';
     return new RegExp(pattern.source, flags);
 };
-

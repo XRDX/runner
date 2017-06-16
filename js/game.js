@@ -23,19 +23,24 @@ Ground.fillRect(520, 260, 15, 5);
 var bg1 = Background.clone();
 var bg2 = Background.clone();
 bg2.transform(canvas.width, 0);
-bg1.setXSpeed(-2);
-bg2.setXSpeed(-2);
+bg1.setXSpeed(-0.4);
+bg2.setXSpeed(-0.4);
 
 var g1 = Ground.clone();
 var g2 = Ground.clone();
 g2.transform(canvas.width, 0);
-g1.setXSpeed(-10);
-g2.setXSpeed(-10);
+g1.setXSpeed(-4);
+g2.setXSpeed(-4);
 // runner
 
 var runner = new Runner();
 runner.fillRect(50, 200, 30, 50, "green");
-runner.fillRect(55, 220, 20, 5, "red");
+
+guagualeft = document.getElementById("guagualeft");
+console.log(guagualeft);
+
+//runner.image(50, 200, 30, 50, guagualeft, 82, 100, 8)
+// (x, y, w, h, src, sw, sy, n)
 
 var game = (function(){
 
@@ -74,7 +79,7 @@ var game = (function(){
 			}
 		}
 		setNextScene(); 
-		lastScene.setXSpeed(-10);
+		lastScene.setXSpeed(-4);
 	}
 
 	var addScene = function(scene){
@@ -91,7 +96,7 @@ var game = (function(){
 		lastScene = curScene;
 		curScene = scenes[curSceneIdx].clone();
 		curScene.transform(canvas.width);
-		curScene.setXSpeed(-10);
+		curScene.setXSpeed(-4);
 		curSceneIdx++;
 		return 
 	}

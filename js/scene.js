@@ -28,9 +28,14 @@ Scene.prototype.fillCircle = function(x, y, r, c){
 	this.shapes.push(circle);
 }
 
-Scene.prototype.drawImage = function(src, x, y, w, h){
+Scene.prototype.image = function(src, x, y, w, h){
 	var image = new Image(src, x, y, w, h);
 	this.shapes.push(image);
+}
+
+Scene.prototype.animation = function(x, y, w, h, src, sw, sy, n){
+	var animation = new Animation(x, y, w, h, src, sw, sy, n);
+	this.shapes.push(animation);
 }
 
 Scene.prototype.draw = function(){
@@ -100,14 +105,14 @@ Scene.prototype.collide = function(otherScene){
 
 function Runner(){
 	Scene.call(this)
-	this.g = 2.0;
+	this.g = 0.4;
 }
 
 Util.inheritPrototype(Runner, Scene);
 
 Runner.prototype.jump = function(){
 	if(!this.isInAir())
-		this.setYSpeed(-20);
+		this.setYSpeed(-10);
 }
 
 Runner.prototype.isInAir = function(){

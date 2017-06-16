@@ -72,6 +72,28 @@ Image.prototype.draw = function(){
   context.drawImage(this.src, this.x, this.y, this.w, this.h)
 }
 
+/* Animation */
+function Animation(x, y, w, h, src, sw, sh, n){
+  Image.call(this, x, y, w, h, src);
+  this.frameMax = n;
+  this.currentFrame = 0;
+  this.sw = sw;
+  this.sh = sh;
+}
+
+Util.inheritPrototype(Animation, Image);
+
+Animation.prototype.draw = function(){
+  var offsetX = this.sw * this.currentFrame;
+  context.drawImage(this.src, 
+    offsetX, 0, this.sw, this.sh,
+    this.x, this.y, this.w, this.h);
+
+  this.currentFrame >= this.frameMax ? this.currentFrame = 0 : this.currentFrame++;
+}
+
+
+
 /* Circle */
 function Circle(x, y, r, c){
   this.type = ShapeTypes.circle;

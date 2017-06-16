@@ -14,8 +14,8 @@ game.addScene(S3);
 
 game.init();
 
-function main(){
+function mainloop(){
 	game.loop();
 }
 
-window.setInterval(main, 100)
+window.setInterval(mainloop, 20);
