@@ -28,13 +28,13 @@ Scene.prototype.fillCircle = function(x, y, r, c){
 	this.shapes.push(circle);
 }
 
-Scene.prototype.image = function(src, x, y, w, h){
-	var image = new Image(src, x, y, w, h);
+Scene.prototype.image = function(img, x, y, w, h){
+	var image = new LImage(img, x, y, w, h);
 	this.shapes.push(image);
 }
 
-Scene.prototype.animation = function(x, y, w, h, src, sw, sy, n){
-	var animation = new Animation(x, y, w, h, src, sw, sy, n);
+Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n){
+	var animation = new Animation(img, x, y, w, h, sw, sy, n);
 	this.shapes.push(animation);
 }
 
@@ -87,7 +87,8 @@ Scene.prototype.run = function(){
 Scene.prototype.loop = function(){
 	this.run();
 	if(this.transformPosition.x < -canvas.width){
-		this.transform(canvas.width * 2, 0);
+    this.reset();
+		this.transform(canvas.width, 0);
 	}
 }
 
@@ -101,31 +102,4 @@ Scene.prototype.collide = function(otherScene){
 	return false;
 }
 
-/* Runner */
 
-function Runner(){
-	Scene.call(this)
-	this.g = 0.4;
-}
-
-Util.inheritPrototype(Runner, Scene);
-
-Runner.prototype.jump = function(){
-	if(!this.isInAir())
-		this.setYSpeed(-10);
-}
-
-Runner.prototype.isInAir = function(){
-	return this.getTransform().y < 0;
-}
-
-Runner.prototype.update = function(){
-	if(this.isInAir() || this.ySpeed <0){
-		this.ySpeed += this.g;
-	} else {
-		this.ySpeed = 0;
-		this.reset();
-	}
-
-	Scene.prototype.update.call(this);
-}

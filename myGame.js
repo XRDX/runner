@@ -12,10 +12,19 @@ game.addScene(S1);
 game.addScene(S2);
 game.addScene(S3);
 
-game.init();
 
 function mainloop(){
-	game.loop();
+  game.loop();
 }
 
-window.setInterval(mainloop, 20);
+var timer;
+
+function main(){
+  game.init();
+  if(timer){
+    window.clearInterval(timer);
+  }
+  timer = window.setInterval(mainloop, 20);
+}
+
+loading(imageURLs, main);

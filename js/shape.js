@@ -60,36 +60,37 @@ FillRect.prototype.draw = function(){
   context.fillRect(this.x, this.y, this.w, this.h);
 }
 
-/* Image */
-function Image(x, y, w, h, src){
+/* LImage */
+function LImage(img, x, y, w, h){
   Rect.call(this, x, y, w, h);
-  this.src = src;
+  this.img = img;
 }
 
-Util.inheritPrototype(Image, Rect);
+Util.inheritPrototype(LImage, Rect);
 
-Image.prototype.draw = function(){
-  context.drawImage(this.src, this.x, this.y, this.w, this.h)
+LImage.prototype.draw = function(){
+  console.log(this.img);
+  context.drawImage(this.img, this.x, this.y, this.w, this.h)
 }
 
 /* Animation */
-function Animation(x, y, w, h, src, sw, sh, n){
-  Image.call(this, x, y, w, h, src);
+function Animation(img, x, y, w, h, sw, sh, n){
+  LImage.call(this, img, x, y, w, h);
   this.frameMax = n;
   this.currentFrame = 0;
   this.sw = sw;
   this.sh = sh;
 }
 
-Util.inheritPrototype(Animation, Image);
+Util.inheritPrototype(Animation, LImage);
 
 Animation.prototype.draw = function(){
   var offsetX = this.sw * this.currentFrame;
-  context.drawImage(this.src, 
+  context.drawImage(this.img, 
     offsetX, 0, this.sw, this.sh,
     this.x, this.y, this.w, this.h);
 
-  this.currentFrame >= this.frameMax ? this.currentFrame = 0 : this.currentFrame++;
+  this.currentFrame >= this.frameMax-1 ? this.currentFrame = 0 : this.currentFrame++;
 }
 
 

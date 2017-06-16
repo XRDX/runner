@@ -1,51 +1,20 @@
-var Background = new Scene();
+"use strict";
 
-Background.fillRect(0, 0, canvas.width, canvas.height, "#00dddd");
-Background.fillRect(50, 50, 50, 10, "white");
-Background.fillRect(150, 60, 50, 10, "white");
-Background.fillRect(250, 40, 50, 10, "white");
-Background.fillRect(350, 50, 50, 10, "white");
-Background.fillRect(450, 30, 50, 10, "white");
-Background.fillRect(550, 50, 50, 10, "white");
 
-var Ground = new Scene();
-
-Ground.fillRect(0, 250, canvas.width, 5)
-Ground.fillRect(20, 270, 10, 5);
-Ground.fillRect(120, 280, 5, 5);
-Ground.fillRect(220, 260, 15, 5);
-Ground.fillRect(320, 280, 5, 5);
-Ground.fillRect(420, 270, 10, 5);
-Ground.fillRect(520, 260, 15, 5);
-
-// loop
-
-var bg1 = Background.clone();
-var bg2 = Background.clone();
-bg2.transform(canvas.width, 0);
-bg1.setXSpeed(-0.4);
-bg2.setXSpeed(-0.4);
-
-var g1 = Ground.clone();
-var g2 = Ground.clone();
-g2.transform(canvas.width, 0);
-g1.setXSpeed(-4);
-g2.setXSpeed(-4);
 // runner
 
-var runner = new Runner();
-runner.fillRect(50, 200, 30, 50, "green");
-
-guagualeft = document.getElementById("guagualeft");
-console.log(guagualeft);
-
-//runner.image(50, 200, 30, 50, guagualeft, 82, 100, 8)
-// (x, y, w, h, src, sw, sy, n)
 
 var game = (function(){
 
+  var runner;
+
 	var SPACE = 32;
 	var ENTER = 13;
+
+  var FPS = 50;
+  var speed = -200/FPS; 
+  var g = 20/FPS; 
+  var jumpSpeed = -500/FPS; 
 
 	var isOver = false;
 	var score = 0;
@@ -53,8 +22,9 @@ var game = (function(){
 
 	var scenes = [];
 	var curSceneIdx = 0;
-	var curScene = new Scene();
-	var lastScene = new Scene();
+	var curScene, lastScene;
+
+  var bg1, bg2, g1, g2;
 
 	var start = function(){
 		isOver = false;
@@ -68,7 +38,48 @@ var game = (function(){
 		highScore = score > highScore ? score : highScore;
 	}
 
+
+  var initBg = function(){
+    bg1 = new Scene();
+    bg1.setXSpeed(speed/5);
+
+    bg1.fillRect(0, 0, canvas.width, canvas.height, "#00dddd");
+    bg1.fillRect(50, 50, 50, 10, "white");
+    bg1.fillRect(150, 60, 50, 10, "white");
+    bg1.fillRect(250, 40, 50, 10, "white");
+    bg1.fillRect(350, 50, 50, 10, "white");
+    bg1.fillRect(450, 30, 50, 10, "white");
+    bg1.fillRect(550, 50, 50, 10, "white");
+
+    bg2 = bg1.clone();
+    bg2.transform(canvas.width, 0);
+
+    g1 = new Scene();
+    g1.setXSpeed(speed);
+
+    g1.fillRect(0, 250, canvas.width, 5)
+    g1.fillRect(20, 270, 10, 5);
+    g1.fillRect(120, 280, 5, 5);
+    g1.fillRect(220, 260, 15, 5);
+    g1.fillRect(320, 280, 5, 5);
+    g1.fillRect(420, 270, 10, 5);
+    g1.fillRect(520, 260, 15, 5);
+
+    g2 = g1.clone();
+    g2.transform(canvas.width, 0);
+  }
+
+  var initRunner = function(){
+    runner = new Runner(); 
+    runner.animation(IMAGES.guagua, 50, 200, 30, 50, 86, 100, 8)
+    runner.setGraviry(g); 
+    runner.setJumpSpeed(jumpSpeed); 
+  }
+
 	var init = function(){
+    initBg();
+    initRunner();
+    initScene();
 		document.onkeydown = function( event ){
 			if(event.keyCode == SPACE){
 				if(isOver){
@@ -78,34 +89,38 @@ var game = (function(){
 				}
 			}
 		}
-		setNextScene(); 
-		lastScene.setXSpeed(-4);
 	}
 
 	var addScene = function(scene){
-		scenes.push(scene)
+    scene.setXSpeed(speed); 
+		scenes.push(scene); 
 	}
+  
+  var initScene = function(){
+    curScene = new Scene();
+    curScene.setXSpeed(speed);
+    updateScene(); 
+  }
 
-	var setNextScene = function(){
+	var updateScene = function(){
+		lastScene = curScene;
+
 		if(scenes.length == 0) return;
 
-		if(curSceneIdx >= scenes.length){
+		curScene = scenes[curSceneIdx];
+    curScene.reset();
+		curScene.transform(canvas.width);
+
+		if(++curSceneIdx >= scenes.length){
 			curSceneIdx = 0;
 		}
-
-		lastScene = curScene;
-		curScene = scenes[curSceneIdx].clone();
-		curScene.transform(canvas.width);
-		curScene.setXSpeed(-4);
-		curSceneIdx++;
-		return 
 	}
 
 	var drawScore = function(){
 		var msg;
 
 		context.fillStyle = 'orange';
-		context.font = '24px Times';
+    context.font='14px bold';
 		msg = "Score: " + score;
 
 		context.fillText(msg, 0, 20);
@@ -128,15 +143,16 @@ var game = (function(){
 		curScene.run();
 		lastScene.run();
 		if(lastScene.getTransform().x < -canvas.width)
-			setNextScene();
+			updateScene();
 
 		runner.update();
 		runner.draw();
 
+		score += 1;
+
 		if(isCollision()){
 			stop();
 		}
-		score += 1;
 	}
 
 	var loop = function(){
@@ -156,9 +172,7 @@ var game = (function(){
 	var mPublic = {
 		init: init,
 		loop: loop,
-		setNextScene: setNextScene,
-		addScene: addScene,
-		scenes: scenes
+		addScene: addScene
 	}
 
 	return mPublic;
