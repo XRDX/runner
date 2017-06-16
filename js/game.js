@@ -71,7 +71,11 @@ var game = (function(){
 
   var initRunner = function(){
     runner = new Runner(); 
-    runner.animation(IMAGES.guagua, 50, 200, 30, 50, 86, 100, 8)
+    runner.animation(IMAGES.guagua, 
+      50, 200, 43, 50, 
+      86, 100, 
+      8, 
+      FPS/10);
     runner.setGraviry(g); 
     runner.setJumpSpeed(jumpSpeed); 
   }
@@ -172,7 +176,8 @@ var game = (function(){
 	var mPublic = {
 		init: init,
 		loop: loop,
-		addScene: addScene
+		addScene: addScene,
+    fps: FPS
 	}
 
 	return mPublic;

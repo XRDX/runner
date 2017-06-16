@@ -33,8 +33,8 @@ Scene.prototype.image = function(img, x, y, w, h){
 	this.shapes.push(image);
 }
 
-Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n){
-	var animation = new Animation(img, x, y, w, h, sw, sy, n);
+Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n, f){
+	var animation = new Animation(img, x, y, w, h, sw, sy, n, f);
 	this.shapes.push(animation);
 }
 
@@ -101,5 +101,3 @@ Scene.prototype.collide = function(otherScene){
 	}
 	return false;
 }
-
-

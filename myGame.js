@@ -5,7 +5,7 @@ var S2 = new Scene();
 S2.fillRect(320, 200, 30, 50, "green");
 
 var S3 = new Scene();
-S3.fillRect(220, 100, 50, 20, "red");
+S3.circle(220, 100, 20, "red");
 S3.fillRect(320, 200, 20, 50, "red");
 
 game.addScene(S1);
@@ -24,7 +24,7 @@ function main(){
   if(timer){
     window.clearInterval(timer);
   }
-  timer = window.setInterval(mainloop, 20);
+  timer = window.setInterval(mainloop, 1000/game.fps);
 }
 
 loading(imageURLs, main);

@@ -74,26 +74,28 @@ LImage.prototype.draw = function(){
 }
 
 /* Animation */
-function Animation(img, x, y, w, h, sw, sh, n){
+function Animation(img, x, y, w, h, sw, sh, n, f){
   LImage.call(this, img, x, y, w, h);
   this.frameMax = n;
   this.currentFrame = 0;
   this.sw = sw;
   this.sh = sh;
+  this.animationFrame = f || 1; 
 }
 
 Util.inheritPrototype(Animation, LImage);
 
 Animation.prototype.draw = function(){
-  var offsetX = this.sw * this.currentFrame;
+  var intFrame = Math.floor(this.currentFrame/this.animationFrame);
+  var offsetX = this.sw * intFrame;
+
   context.drawImage(this.img, 
     offsetX, 0, this.sw, this.sh,
     this.x, this.y, this.w, this.h);
 
-  this.currentFrame >= this.frameMax-1 ? this.currentFrame = 0 : this.currentFrame++;
+  if(++this.currentFrame >= this.frameMax * this.animationFrame)
+    this.currentFrame = 0;
 }
-
-
 
 /* Circle */
 function Circle(x, y, r, c){
