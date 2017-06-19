@@ -26,7 +26,7 @@ var LL = (function(){
 		return IMAGES;
 	}
 
-	function loadingImageAndRun(callback){
+	function loadImageAndRun(callback){
 	  var loadedImages = 0;    
 	  var numImages = 0;  
 
@@ -43,12 +43,15 @@ var LL = (function(){
 
 	  var drawLoading = function(){
 	    context.clearRect(0, 0, cw, ch);
+	  	context.fillStyle = "#40eeee";
+	    context.fillRect(0, 0, cw, ch);
+	    context.fillStyle = "orange";
 	    context.fillText('Loading:'+loadedImages+'/'+numImages, cw/4, ch/2-20);
 
 	    context.beginPath();
 	    context.moveTo(cw/4, ch/2);
 	    context.lineTo(cw*3/4, ch/2);
-	    context.strokeStyle='gray';
+	    context.strokeStyle='white';
 	    context.stroke();
 	    context.closePath(); 
 
@@ -81,8 +84,7 @@ var LL = (function(){
 
   	return {
 	    inheritPrototype: inheritPrototype,
-	    loadingImageAndRun: loadingImageAndRun,
-	    IMAGES: IMAGES,
+	    loadImageAndRun: loadImageAndRun,
 	    addImages: addImages,
 	    getImages: getImages
   	}

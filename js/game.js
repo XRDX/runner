@@ -1,9 +1,13 @@
 "use strict";
-
+LL.addImages({
+  guagua: "img/ani/run.png",
+  bg: "img/bg.png",
+  ground: "img/ground.png",
+  score: "img/score.png",
+  hiscore: "img/hiscore.png"
+});
 
 // runner
-
-
 var game = (function(){
 
   var runner;
@@ -11,10 +15,10 @@ var game = (function(){
 	var SPACE = 32;
 	var ENTER = 13;
 
-  var FPS = 50;
-  var speed = -200/FPS; 
-  var g = 20/FPS; 
-  var jumpSpeed = -500/FPS; 
+	var FPS = 50;
+	var speed = -200/FPS; 
+	var g = 20/FPS; 
+	var jumpSpeed = -500/FPS; 
 
 	var isOver = false;
 	var score = 0;
@@ -24,13 +28,14 @@ var game = (function(){
 	var curSceneIdx = 0;
 	var curScene, lastScene;
 
-  var bg1, bg2, g1, g2;
+  	var bg1, bg2, g1, g2;
 
 	var start = function(){
 		isOver = false;
 		score = 0;
 		curScene.transform(canvas.width);
 		lastScene.transform(canvas.width);
+		requestAnimationFrame(loop);
 	}
 
 	var stop = function(){
@@ -40,24 +45,24 @@ var game = (function(){
 
 
   var initBg = function(){
-    bg1 = new Scene();
-    bg1.setXSpeed(speed/5);
-    bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
+	bg1 = new Scene();
+	bg1.setXSpeed(speed/5);
+	bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
 
-    bg2 = new Scene();
-    bg2.setXSpeed(speed/5);
-    bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
-    bg2.transform(canvas.width, 0);
+	bg2 = new Scene();
+	bg2.setXSpeed(speed/5);
+	bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
+	bg2.transform(canvas.width, 0);
 
-    g1 = new Scene();
-    g1.setXSpeed(speed);
-    g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
+	g1 = new Scene();
+	g1.setXSpeed(speed);
+	g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
 
 
-    g2 = new Scene();
-    g2.setXSpeed(speed);
-    g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
-    g2.transform(canvas.width, 0);
+	g2 = new Scene();
+	g2.setXSpeed(speed);
+	g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
+	g2.transform(canvas.width, 0);
   }
 
   var initRunner = function(){
@@ -72,9 +77,9 @@ var game = (function(){
   }
 
 	var init = function(){
-    initBg();
-    initRunner();
-    initScene();
+	    initBg();
+	    initRunner();
+	    initScene();
 		document.onkeydown = function( event ){
 			if(event.keyCode == SPACE){
 				if(isOver){
@@ -91,11 +96,11 @@ var game = (function(){
 		scenes.push(scene); 
 	}
   
-  var initScene = function(){
-    curScene = new Scene();
-    curScene.setXSpeed(speed);
-    updateScene(); 
-  }
+	var initScene = function(){
+		curScene = new Scene();
+		curScene.setXSpeed(speed);
+		updateScene(); 
+	}
 
 	var updateScene = function(){
 		lastScene = curScene;
@@ -103,7 +108,7 @@ var game = (function(){
 		if(scenes.length == 0) return;
 
 		curScene = scenes[curSceneIdx];
-    curScene.reset();
+    	curScene.reset();
 		curScene.transform(canvas.width);
 
 		if(++curSceneIdx >= scenes.length){
@@ -114,23 +119,23 @@ var game = (function(){
 	var drawScore = function(){
 		var msg;
 
-		context.fillStyle = 'orange';
-    	context.font='14px bold';
-		msg = "Score: " + score;
+		context.fillStyle = 'white';
+    	context.font='15px bold';
+    	context.drawImage(LL.getImages().score, 3, 3, 20, 20);
+		context.fillText(score, 25, 20);
 
-		context.fillText(msg, 0, 20);
-		msg = "HI: " + highScore;
-
-		context.fillText(msg, 300, 20);
+		context.drawImage(LL.getImages().hiscore, canvas.width-80, 3, 20, 20);
+		context.fillText(highScore, canvas.width-55, 20);
 
 		if(isOver){
-			context.fillText("press SPACE to try again", 150, 150);
+			context.font='18px bold';
+			context.fillText("press SPACE to try again", 180, 100);
 		}
 	}
 
 
 	var run = function(){
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		//context.clearRect(0, 0, canvas.width, canvas.height);
 		bg1.loop();
 		bg2.loop();
 		g1.loop();
@@ -154,9 +159,9 @@ var game = (function(){
 	var loop = function(){
 		if(!isOver){
 			run();
-		} 
-
-		drawScore();		
+			drawScore();
+			requestAnimationFrame(loop);	
+		}
 	}
 
 	var isCollision = function(){
@@ -169,7 +174,8 @@ var game = (function(){
 		init: init,
 		loop: loop,
 		addScene: addScene,
-    fps: FPS
+    	fps: FPS,
+    	start: start
 	}
 
 	return mPublic;
