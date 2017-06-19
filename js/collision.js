@@ -17,10 +17,10 @@ var Collision =  (function(){
 	}
 
 	var rect2circle = function(rect, circle){
-		if(rect.x + rect.w < circle.x) return false;
-		if(rect.x > circle.x + circle.r) return false;
-		if(rect.y + rect.h < circle.y) return false;
-		if(rect.y > circle.y + circle.r) return false;
+		if(rect.x + rect.w < circle.x - circle.r) return false;
+		if(rect.x 		   > circle.x + circle.r) return false;
+		if(rect.y + rect.h < circle.y - circle.r) return false;
+		if(rect.y          > circle.y + circle.r) return false;
 
 		return true;
 	}
@@ -32,6 +32,13 @@ var Collision =  (function(){
 			return false;
 
 		return true;
+	}
+
+	var rect2line = function(rect, line){
+		if(rect.x > line.x1 && rect.x > line.x2) return false;
+		if(rect.x + rect.w < line.x1 && rect.w < line.x2) return false;
+		if(rect.y > line.y1 && rect.y > line.y2) return false;
+		if(rect.y + rect.h < line.y1 && rect.y + rect.h < line.y2) return false;
 	}
 
 	var mPublic = {

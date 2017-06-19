@@ -73,7 +73,7 @@ var game = (function(){
     runner = new Runner(); 
     runner.animation(IMAGES.guagua, 
       50, 200, 43, 50, 
-      86, 100, 
+      80, 100, 
       8, 
       FPS/10);
     runner.setGraviry(g); 
