@@ -69,12 +69,6 @@ Scene.prototype.getTransform = function(){
 	return this.transformPosition;
 }
 
-Scene.prototype.clone = function(){
-	var clone = Object.clone.call(this)
-	clone.prototype = this.prototype;
-	return clone;
-}
-
 Scene.prototype.reset = function(){
 	this.transform(-this.transformPosition.x, -this.transformPosition.y)
 }
@@ -87,7 +81,7 @@ Scene.prototype.run = function(){
 Scene.prototype.loop = function(){
 	this.run();
 	if(this.transformPosition.x < -canvas.width){
-    this.reset();
+    	this.reset();
 		this.transform(canvas.width, 0);
 	}
 }

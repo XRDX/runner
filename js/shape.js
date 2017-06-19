@@ -53,7 +53,7 @@ function FillRect(x, y, w, h, c){
   Rect.call(this, x, y, w, h, c);
 }
 
-Util.inheritPrototype(FillRect, Rect)
+LL.inheritPrototype(FillRect, Rect)
 
 FillRect.prototype.draw = function(){
   context.fillStyle = this.c;
@@ -66,11 +66,10 @@ function LImage(img, x, y, w, h){
   this.img = img;
 }
 
-Util.inheritPrototype(LImage, Rect);
+LL.inheritPrototype(LImage, Rect);
 
 LImage.prototype.draw = function(){
-  console.log(this.img);
-  context.drawImage(this.img, this.x, this.y, this.w, this.h)
+  context.drawImage(this.img, this.x, this.y, this.w, this.h) 
 }
 
 /* Animation */
@@ -83,7 +82,7 @@ function Animation(img, x, y, w, h, sw, sh, n, f){
   this.animationFrame = f || 1; 
 }
 
-Util.inheritPrototype(Animation, LImage);
+LL.inheritPrototype(Animation, LImage);
 
 Animation.prototype.draw = function(){
   var intFrame = Math.floor(this.currentFrame/this.animationFrame);
@@ -140,7 +139,7 @@ function FillCircle(x, y, r, c){
   Circle.call(this, x, y, r, c);
 }
 
-Util.inheritPrototype(FillCircle, Circle)
+LL.inheritPrototype(FillCircle, Circle)
 
 FillCircle.prototype.draw = function(){
   context.fillStyle = this.c;

@@ -8,7 +8,7 @@ function Runner(){
   this.jumpSpeed = -10; 
 }
 
-Util.inheritPrototype(Runner, Scene);
+LL.inheritPrototype(Runner, Scene);
 
 Runner.prototype.jump = function(){
 	if(!this.isInAir())

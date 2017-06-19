@@ -42,38 +42,29 @@ var game = (function(){
   var initBg = function(){
     bg1 = new Scene();
     bg1.setXSpeed(speed/5);
+    bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
 
-    bg1.fillRect(0, 0, canvas.width, canvas.height, "#00dddd");
-    bg1.fillRect(50, 50, 50, 10, "white");
-    bg1.fillRect(150, 60, 50, 10, "white");
-    bg1.fillRect(250, 40, 50, 10, "white");
-    bg1.fillRect(350, 50, 50, 10, "white");
-    bg1.fillRect(450, 30, 50, 10, "white");
-    bg1.fillRect(550, 50, 50, 10, "white");
-
-    bg2 = bg1.clone();
+    bg2 = new Scene();
+    bg2.setXSpeed(speed/5);
+    bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
     bg2.transform(canvas.width, 0);
 
     g1 = new Scene();
     g1.setXSpeed(speed);
+    g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
 
-    g1.fillRect(0, 250, canvas.width, 5)
-    g1.fillRect(20, 270, 10, 5);
-    g1.fillRect(120, 280, 5, 5);
-    g1.fillRect(220, 260, 15, 5);
-    g1.fillRect(320, 280, 5, 5);
-    g1.fillRect(420, 270, 10, 5);
-    g1.fillRect(520, 260, 15, 5);
 
-    g2 = g1.clone();
+    g2 = new Scene();
+    g2.setXSpeed(speed);
+    g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
     g2.transform(canvas.width, 0);
   }
 
   var initRunner = function(){
     runner = new Runner(); 
     runner.animation(IMAGES.guagua, 
-      50, 200, 43, 50, 
-      80, 100, 
+      50, 172, 31, 49, 
+      61, 98, 
       8, 
       FPS/10);
     runner.setGraviry(g); 
@@ -124,7 +115,7 @@ var game = (function(){
 		var msg;
 
 		context.fillStyle = 'orange';
-    context.font='14px bold';
+    	context.font='14px bold';
 		msg = "Score: " + score;
 
 		context.fillText(msg, 0, 20);
@@ -139,6 +130,7 @@ var game = (function(){
 
 
 	var run = function(){
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		bg1.loop();
 		bg2.loop();
 		g1.loop();
