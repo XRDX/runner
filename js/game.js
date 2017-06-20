@@ -1,11 +1,4 @@
 "use strict";
-LL.addImages({
-  guagua: "img/ani/run.png",
-  bg: "img/bg.png",
-  ground: "img/ground.png",
-  score: "img/score.png",
-  hiscore: "img/hiscore.png"
-});
 
 // runner
 var game = (function(){
@@ -15,10 +8,7 @@ var game = (function(){
 	var SPACE = 32;
 	var ENTER = 13;
 
-	var FPS = 50;
-	var speed = -200/FPS; 
-	var g = 20/FPS; 
-	var jumpSpeed = -500/FPS; 
+	var speed = -4; 
 
 	var isOver = false;
 	var score = 0;
@@ -69,11 +59,9 @@ var game = (function(){
     runner = new Runner(); 
     runner.animation(IMAGES.guagua, 
       50, 172, 31, 49, 
-      61, 98, 
-      8, 
-      FPS/10);
-    runner.setGraviry(g); 
-    runner.setJumpSpeed(jumpSpeed); 
+      61, 98, 8, 5);
+    runner.setGraviry(0.4); 
+    runner.setJumpSpeed(-10); 
   }
 
 	var init = function(){
@@ -91,9 +79,11 @@ var game = (function(){
 		}
 	}
 
-	var addScene = function(scene){
-    scene.setXSpeed(speed); 
+	var newScene = function(){
+		var scene = new Scene();
+    	scene.setXSpeed(speed); 
 		scenes.push(scene); 
+		return scene;
 	}
   
 	var initScene = function(){
@@ -173,9 +163,11 @@ var game = (function(){
 	var mPublic = {
 		init: init,
 		loop: loop,
-		addScene: addScene,
-    	fps: FPS,
-    	start: start
+		newScene: newScene,
+    	start: start,
+    	getImages: LL.getImages,
+    	addImages: LL.addImages,
+    	loadImageAndRun: LL.loadImageAndRun,
 	}
 
 	return mPublic;
