@@ -53,8 +53,8 @@ var Collision =  (function(){
     return rect;
   }
 
-  var canvas1 = document.createElement("canvas");
-  var canvas2 = document.createElement("canvas");
+  var canvas1 = document.getElementById("canvas1");
+  var canvas2 = document.getElementById("canvas2");
 
   var ctx1 = canvas1.getContext("2d");
   var ctx2 = canvas2.getContext("2d");

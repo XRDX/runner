@@ -12,7 +12,7 @@ var LL = (function(){
 
 
 	/* Images Manager */
-	var imageURLs = {};
+	var imageURLs = imagesData;
 
 	var IMAGES = {};
 
@@ -74,13 +74,12 @@ var LL = (function(){
 	  for (var image in imageURLs) {    
 	    IMAGES[image] = new Image();    
 	    IMAGES[image].onload = loading;
+	    // IMAGES[image].crossOrigin = 'Anonymous';
 	    IMAGES[image].src = imageURLs[image];    
 	  }    
 
 	  drawLoading(); 
-	}    
-	/*end*/
-
+	}
 
   	return {
 	    inheritPrototype: inheritPrototype,
@@ -90,3 +89,12 @@ var LL = (function(){
   	}
 
 })();
+
+var URL = "http://test-1252287760.costj.myqcloud.com/runner/";
+
+LL.addImages({
+  bg: URL + "img/bg.png",
+  ground: URL + "img/ground.png",
+  score: URL + "img/score.png",
+  hiscore: URL + "img/hiscore.png"
+});

@@ -1,22 +1,21 @@
-var URL = "";
-
-game.addImages({
-  guagua: URL + "img/ani/run.png",
-  chomperAni: URL + "img/ani/chomper_75x104x7.png",
-  flowerAni: URL + "img/ani/flower_92x104x7.png",
-  bg: URL + "img/bg.png",
-  ground: URL + "img/ground.png",
-  score: URL + "img/score.png",
-  hiscore: URL + "img/hiscore.png",
-  cacti: URL + "img/cacti.png",
-  fire: URL + "img/fire.png",
-  flower: URL + "img/flower.png",
-  spike1: URL + "img/spike1.png",
-  spike2: URL + "img/spike2.png",
-  spike3: URL + "img/spike3.png",
-  tree: URL + "img/tree.png",
-  chomper: URL + "img/chomper.png"
-});
+//   guagua: "img/ani/run.png",
+//   chomperAni: "img/ani/chomper_75x104x7.png",
+//   flowerAni: "img/ani/flower_92x104x7.png",
+//   birdAni: "img/ani/bird_112x84x8.png",
+//   crabAni: "img/ani/crab_117x90x6.png",
+//   fireAni: "img/ani/fire_75x87x5.png",
+//   bg: "img/bg.png",
+//   ground: "img/ground.png",
+//   score: "img/score.png",
+//   hiscore: "img/hiscore.png",
+//   cacti: "img/cacti.png",
+//   fire: "img/fire.png",
+//   flower: "img/flower.png",
+//   spike1: "img/spike1.png",
+//   spike2: "img/spike2.png",
+//   spike3: "img/spike3.png",
+//   tree: "img/tree.png",
+//   chomper: "img/chomper.png"
 
 IMAGES = game.getImages();
 
@@ -32,7 +31,8 @@ game.loadImageAndRun(function(){
 	S2.image(IMAGES.spike1, 500, 70, 50, 50);
 
 	var S3 = game.newScene();
-	S3.image(IMAGES.fire, 300, 150, 70, 70);
+	S3.animation(IMAGES.fireAni, 400, 179, 37, 43,
+    77, 87, 5, 5);
 
 	var S4 = game.newScene();
 	S4.animation(IMAGES.chomperAni, 250, 170, 37, 52, 
@@ -45,7 +45,24 @@ game.loadImageAndRun(function(){
 	S5.image(IMAGES.tree, 300, 150, 70, 70);
 	S5.image(IMAGES.tree, 500, 150, 70, 70);
 
-  	game.init();
-  	game.start();
+  var S6 = game.newScene();
+  S6.animation(IMAGES.crabAni, 400, 177, 58, 45,
+    117, 90, 6, 5);
+  S6.animation(IMAGES.crabAni, 600, 177, 58, 45,
+    117, 90, 6, 5);
+  S6.setXSpeed(game.speed * 1.1);
+
+  var S7 = game.newScene();
+  S7.animation(IMAGES.birdAni, 400, 100, 56, 42,
+    112, 84, 8, 5);
+  S7.animation(IMAGES.birdAni, 500, 80, 56, 42,
+    112, 84, 8, 5);
+  S7.animation(IMAGES.birdAni, 600, 60, 56, 42,
+    112, 84, 8, 5);
+  S7.setXSpeed(game.speed * 1.2);
+  game.newScene();// incase of error
+
+  game.init();
+  game.start();
   	
 })

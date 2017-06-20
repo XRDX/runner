@@ -23,8 +23,12 @@ var game = (function(){
 	var start = function(){
 		isOver = false;
 		score = 0;
-		curScene.transform(canvas.width);
+		
+		lastScene.reset();
+		curScene.reset();
+		
 		lastScene.transform(canvas.width);
+		curScene.transform(canvas.width * 2);
 		requestAnimationFrame(loop);
 	}
 
@@ -99,7 +103,7 @@ var game = (function(){
 
 		curScene = scenes[curSceneIdx];
     	curScene.reset();
-		curScene.transform(canvas.width);
+		curScene.transform(canvas.width + lastScene.getTransform().x, 0);
 
 		if(++curSceneIdx >= scenes.length){
 			curSceneIdx = 0;
@@ -168,6 +172,7 @@ var game = (function(){
     	getImages: LL.getImages,
     	addImages: LL.addImages,
     	loadImageAndRun: LL.loadImageAndRun,
+    	speed: speed
 	}
 
 	return mPublic;
