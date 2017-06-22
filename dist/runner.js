@@ -1,143 +1,140 @@
-"use strict";
-
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
 var LL = (function(){
 
-  var inheritPrototype = function(subClass, superClass) {
-      var prototype = Object.create(superClass.prototype);
-      prototype.constructor = subClass;
-      subClass.prototype = prototype;
-  };
+	var inheritPrototype = function(subClass, superClass) {
+	    var prototype = Object.create(superClass.prototype);
+	    prototype.constructor = subClass;
+	    subClass.prototype = prototype;
+	};
 
 
-  /* Images Manager */
-  var imageURLs = {};
+	/* Images Manager */
+	var imageURLs = {};
 
-  var IMAGES = {};
+	var IMAGES = {};
 
-  function addImages(images){
-    for (var image in images) {    
-      imageURLs[image] = images[image];
-    }
-  }
+	function addImages(images){
+	  for (var image in images) {    
+	    imageURLs[image] = images[image];
+	  }
+	}
 
-  function getImages(){
-    return IMAGES;
-  }
+	function getImages(){
+		return IMAGES;
+	}
 
-  function loadImageAndRun(callback){
-    var loadedImages = 0;    
-    var numImages = 0;  
+	function loadImageAndRun(callback){
+	  var loadedImages = 0;    
+	  var numImages = 0;  
 
-    context.font='14px bold';
-    context.lineWidth=5;
+	  context.font='14px bold';
+	  context.lineWidth=5;
 
-    var cw = canvas.width;
-    var ch = canvas.height;
+	  var cw = canvas.width;
+	  var ch = canvas.height;
 
-    // get num of imageURLs    
-    for (var image in imageURLs) {    
-      numImages++;
-    }
+	  // get num of imageURLs    
+	  for (var image in imageURLs) {    
+	    numImages++;
+	  }
 
-    var drawLoading = function(){
-      context.clearRect(0, 0, cw, ch);
-      context.fillStyle = "#40eeee";
-      context.fillRect(0, 0, cw, ch);
-      context.fillStyle = "orange";
-      context.fillText('Loading:'+loadedImages+'/'+numImages, cw/4, ch/2-20);
+	  var drawLoading = function(){
+	    context.clearRect(0, 0, cw, ch);
+	  	context.fillStyle = "#40eeee";
+	    context.fillRect(0, 0, cw, ch);
+	    context.fillStyle = "orange";
+	    context.fillText('Loading:'+loadedImages+'/'+numImages, cw/4, ch/2-20);
 
-      context.beginPath();
-      context.moveTo(cw/4, ch/2);
-      context.lineTo(cw*3/4, ch/2);
-      context.strokeStyle='white';
-      context.stroke();
-      context.closePath(); 
+	    context.beginPath();
+	    context.moveTo(cw/4, ch/2);
+	    context.lineTo(cw*3/4, ch/2);
+	    context.strokeStyle='white';
+	    context.stroke();
+	    context.closePath(); 
 
-      context.beginPath();
-      context.moveTo(cw/4, ch/2);
-      context.lineTo(cw/4+cw/2*loadedImages/numImages, ch/2);  
-      context.strokeStyle='orange';
-      context.stroke();
-      context.closePath(); 
-    }
-    
-    var loading = function(){ 
-      drawLoading();
+	    context.beginPath();
+	    context.moveTo(cw/4, ch/2);
+	    context.lineTo(cw/4+cw/2*loadedImages/numImages, ch/2);  
+	    context.strokeStyle='orange';
+	    context.stroke();
+	    context.closePath(); 
+	  }
+	  
+	  var loading = function(){ 
+	    drawLoading();
 
-      if (++loadedImages >= numImages) {    
-        callback();    
-      }    
-    };  
+	    if (++loadedImages >= numImages) {    
+	      callback();    
+	    }    
+	  };  
 
-    for (var image in imageURLs) {    
-      IMAGES[image] = new Image();    
-      IMAGES[image].onload = loading;
-      IMAGES[image].src = imageURLs[image].src;
-      IMAGES[image].w = imageURLs[image].w;
-      IMAGES[image].h = imageURLs[image].h;
+	  for (var image in imageURLs) {    
+	    IMAGES[image] = new Image();    
+	    IMAGES[image].onload = loading;
+	    IMAGES[image].src = imageURLs[image].src;
+	    IMAGES[image].w = imageURLs[image].w;
+	    IMAGES[image].h = imageURLs[image].h;
 
-      IMAGES[image].fs = imageURLs[image].fs;
-    }    
+	    IMAGES[image].fs = imageURLs[image].fs;
+	  }    
 
-    drawLoading(); 
-  }
+	  drawLoading(); 
+	}
 
-    return {
-      inheritPrototype: inheritPrototype,
-      loadImageAndRun: loadImageAndRun,
-      addImages: addImages,
-      getImages: getImages
-    }
+  	return {
+	    inheritPrototype: inheritPrototype,
+	    loadImageAndRun: loadImageAndRun,
+	    addImages: addImages,
+	    getImages: getImages
+  	}
 
 })();
 
 LL.addImages(images);
-
 var Collision =  (function(){
 
-  /*
-  rect: x, y, w, h
-  circle: x, y, r
-  line: x1, y1, x2, y2
-  */
-  var rect2rect = function(rect1, rect2){
-    if(rect1.x + rect1.w < rect2.x) return false;
-    if(rect1.x > rect2.x + rect2.w) return false;
-    if(rect1.y + rect1.h < rect2.y) return false;
-    if(rect1.y > rect2.y + rect2.h) return false;
+	/*
+	rect: x, y, w, h
+	circle: x, y, r
+	line: x1, y1, x2, y2
+	*/
+	var rect2rect = function(rect1, rect2){
+		if(rect1.x + rect1.w < rect2.x) return false;
+		if(rect1.x > rect2.x + rect2.w) return false;
+		if(rect1.y + rect1.h < rect2.y) return false;
+		if(rect1.y > rect2.y + rect2.h) return false;
+
+		return true;
+	}
+
+	var rect2circle = function(rect, circle){
+		if(rect.x + rect.w < circle.x - circle.r) return false;
+		if(rect.x 		     > circle.x + circle.r) return false;
+		if(rect.y + rect.h < circle.y - circle.r) return false;
+		if(rect.y          > circle.y + circle.r) return false;
+
+		return true;
+	}
+
+	var circle2circle = function(circle1, circle2){
+		if(((circle1.x - circle2.x) * (circle1.x - circle2.x) +
+			(circle1.y - circle2.y) * (circle1.y - circle2.y))
+			> (circle1.r + circle2.r) * (circle1.r + circle2.r))
+			return false;
+
+		return true;
+	}
+
+	var rect2line = function(rect, line){
+		if(rect.x > line.x1 && rect.x > line.x2) return false;
+		if(rect.x + rect.w < line.x1 && rect.w < line.x2) return false;
+		if(rect.y > line.y1 && rect.y > line.y2) return false;
+		if(rect.y + rect.h < line.y1 && rect.y + rect.h < line.y2) return false;
 
     return true;
-  }
-
-  var rect2circle = function(rect, circle){
-    if(rect.x + rect.w < circle.x - circle.r) return false;
-    if(rect.x          > circle.x + circle.r) return false;
-    if(rect.y + rect.h < circle.y - circle.r) return false;
-    if(rect.y          > circle.y + circle.r) return false;
-
-    return true;
-  }
-
-  var circle2circle = function(circle1, circle2){
-    if(((circle1.x - circle2.x) * (circle1.x - circle2.x) +
-      (circle1.y - circle2.y) * (circle1.y - circle2.y))
-      > (circle1.r + circle2.r) * (circle1.r + circle2.r))
-      return false;
-
-    return true;
-  }
-
-  var rect2line = function(rect, line){
-    if(rect.x > line.x1 && rect.x > line.x2) return false;
-    if(rect.x + rect.w < line.x1 && rect.w < line.x2) return false;
-    if(rect.y > line.y1 && rect.y > line.y2) return false;
-    if(rect.y + rect.h < line.y1 && rect.y + rect.h < line.y2) return false;
-
-    return true;
-  }
+	}
 
   var getDupRect = function(rect1, rect2){
     var rect = {};
@@ -158,8 +155,8 @@ var Collision =  (function(){
   canvas1.width = canvas2.width = canvas.width;
   canvas1.height = canvas2.height = canvas.height;
 
-  var image2image = function(image1, image2){
-    if(rect2rect(image1, image2)){
+	var image2image = function(image1, image2){
+		if(rect2rect(image1, image2)){
 
       ctx1.clearRect(0, 0, canvas.width, canvas.height);
       ctx2.clearRect(0, 0, canvas.width, canvas.height);
@@ -183,24 +180,21 @@ var Collision =  (function(){
         }
       }
       return false;
-    }
+		}
 
-    return false;
-  }
+		return false;
+	}
 
-  var mPublic = {
-    rect2rect: rect2rect,
-    rect2circle: rect2circle,
-    circle2circle: circle2circle,
+	var mPublic = {
+		rect2rect: rect2rect,
+		rect2circle: rect2circle,
+		circle2circle: circle2circle,
     image2image: image2image
-  }
+	}
 
-  return mPublic;
+	return mPublic;
 
 }());
-
-"use strict";
-
 var ShapeTypes = Object.freeze({
   rect: 0,
   circle: 1,
@@ -408,138 +402,141 @@ Text.prototype.transform = function(dx, dy){
   this.x += dx;
   this.y += dy;
 }
-
-"use strict";
-
 function Scene(){
-  this.shapes = new Array();
-  this.xSpeed = 0;
-  this.ySpeed = 0;
-  this.transformPosition = {x: 0, y: 0};
+	this.shapes = new Array();
+	this.xSpeed = 0;
+	this.ySpeed = 0;
+	this.transformPosition = {x: 0, y: 0};
 }
 
 Scene.prototype.rect = function(x, y, w, h, c){
-  var rect = new Rect(x, y, w, h, c);
-  this.shapes.push(rect);
+	var rect = new Rect(x, y, w, h, c);
+	this.shapes.push(rect);
 }
 
 Scene.prototype.fillRect = function(x, y, w, h, c){
-  var rect = new FillRect(x, y, w, h, c);
-  this.shapes.push(rect);
+	var rect = new FillRect(x, y, w, h, c);
+	this.shapes.push(rect);
 }
 
 
 Scene.prototype.circle = function(x, y, r, c){
-  var circle = new Circle(x, y, r, c);
-  this.shapes.push(circle);
+	var circle = new Circle(x, y, r, c);
+	this.shapes.push(circle);
 }
 
 Scene.prototype.fillCircle = function(x, y, r, c){
-  var circle = new FillCircle(x, y, r, c);
-  this.shapes.push(circle);
+	var circle = new FillCircle(x, y, r, c);
+	this.shapes.push(circle);
 }
 
 Scene.prototype.image = function(img, x, y, w, h){
-  var image = new LImage(img, x, y, w, h);
-  this.shapes.push(image);
+	var image = new LImage(img, x, y, w, h);
+	this.shapes.push(image);
 }
 
 Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n, f){
-  var animation = new Animation(img, x, y, w, h, sw, sy, n, f);
-  this.shapes.push(animation);
+	var animation = new Animation(img, x, y, w, h, sw, sy, n, f);
+	this.shapes.push(animation);
 }
 
 Scene.prototype.text = function(msg, x, y, c){
-  var text = new Text(msg, x, y, c);
-  this.shapes.push(text);
+	var text = new Text(msg, x, y, c);
+	this.shapes.push(text);
 }
 
 Scene.prototype.draw = function(){
-  for(var i=0; i<this.shapes.length; i++){
-    this.shapes[i].draw();
-  }
+	for(var i=0; i<this.shapes.length; i++){
+		this.shapes[i].draw();
+	}
 }
 
 Scene.prototype.setXSpeed = function(xSpeed){
-  this.xSpeed = xSpeed;
+	this.xSpeed = xSpeed;
 }
 
 Scene.prototype.setYSpeed = function(ySpeed){
-  this.ySpeed = ySpeed;
+	this.ySpeed = ySpeed;
 }
 
 Scene.prototype.update = function(){
-  this.transform(this.xSpeed, this.ySpeed);
+	this.transform(this.xSpeed, this.ySpeed);
 }
 
 Scene.prototype.transform = function(dx, dy){
-  dy = dy || 0;
-  this.transformPosition.x += dx;
-  this.transformPosition.y += dy;
-  for(var i=0; i<this.shapes.length; i++){
-    this.shapes[i].transform(dx, dy);
-  }
+	dy = dy || 0;
+	this.transformPosition.x += dx;
+	this.transformPosition.y += dy;
+	for(var i=0; i<this.shapes.length; i++){
+		this.shapes[i].transform(dx, dy);
+	}
 }
 
 Scene.prototype.getTransform = function(){
-  return this.transformPosition;
+	return this.transformPosition;
 }
 
 Scene.prototype.reset = function(){
-  this.transform(-this.transformPosition.x, -this.transformPosition.y)
+	this.transform(-this.transformPosition.x, -this.transformPosition.y)
 }
 
 Scene.prototype.run = function(){
-  this.update();
-  this.draw();
+	this.update();
+	this.draw();
 }
 
 Scene.prototype.loop = function(){
-  this.run();
-  if(this.transformPosition.x < -canvas.width){
-      this.reset();
-    this.transform(canvas.width, 0);
-  }
+	this.run();
+	if(this.transformPosition.x < -canvas.width){
+    	this.reset();
+		this.transform(canvas.width, 0);
+	}
 }
 
 Scene.prototype.collide = function(otherScene){
-  for(var i=0; i<this.shapes.length; i++){
-    for(var j=0; j<otherScene.shapes.length; j++){
-      if(this.shapes[i].collide(otherScene.shapes[j]))
-        return true;
-    }
-  }
-  return false;
+	for(var i=0; i<this.shapes.length; i++){
+		for(var j=0; j<otherScene.shapes.length; j++){
+			if(this.shapes[i].collide(otherScene.shapes[j]))
+				return true;
+		}
+	}
+	return false;
 }
-
 /* Runner */
 
 function Runner(){
-  Scene.call(this)
-  this.g = 1;
+	Scene.call(this)
+	this.g = 1;
   this.jumpSpeed = -10; 
+  this.secondJump = false;
 }
 
 LL.inheritPrototype(Runner, Scene);
 
 Runner.prototype.jump = function(){
-  if(!this.isInAir())
-    this.setYSpeed(this.jumpSpeed);
+	if(!this.isInAir()){
+		this.setYSpeed(this.jumpSpeed);
+		this.secondJump = true;
+	}
+	if(this.secondJump && this.ySpeed > 0){
+		this.setYSpeed(this.jumpSpeed*0.8);
+		this.secondJump = false;
+	}
 }
 
 Runner.prototype.isInAir = function(){
-  return this.getTransform().y < 0;
+	return this.getTransform().y < 0;
 }
 
 Runner.prototype.update = function(){
-  if(this.isInAir() || this.ySpeed <0){
-    this.ySpeed += this.g;
-  } else {
-    this.ySpeed = 0;
-    this.reset();
-  }
+	if(this.isInAir() || this.ySpeed <0){
+		this.ySpeed += this.g;
+	} else {
+		this.ySpeed = 0;
+		this.reset();
+	}
 
-  Scene.prototype.update.call(this);
+	Scene.prototype.update.call(this);
 }
 
 Runner.prototype.setGraviry = function(g){
@@ -549,10 +546,6 @@ Runner.prototype.setGraviry = function(g){
 Runner.prototype.setJumpSpeed = function(speed){
   this.jumpSpeed = speed; 
 }
-
-
-"use strict";
-
 // runner
 var game = (function(){
 
@@ -569,9 +562,10 @@ var game = (function(){
 
   var scenes = [];
   var curSceneIdx = 0;
-  var curScene, lastScene;
+  var curScene = new Scene();
+  var lastScene = new Scene();
 
-    var bg1, bg2, g1, g2;
+  var bg1, bg2, g1, g2;
 
   var start = function(){
     isOver = false;
@@ -582,7 +576,8 @@ var game = (function(){
     
     lastScene.transform(canvas.width);
     curScene.transform(canvas.width * 2);
-    requestAnimationFrame(loop);
+
+    window.requestAnimationFrame(loop, canvas);
   }
 
   var stop = function(){
@@ -622,16 +617,17 @@ var game = (function(){
   }
 
   var init = function(){
-      initBg();
-      initRunner();
-      initScene();
+    initBg();
+    initRunner();
+    initScene();
     document.onkeydown = function( event ){
-      if(event.keyCode == SPACE){
-        if(isOver){
-          start();
-        } else {
-          runner.jump();
-        }
+      if(event.keyCode == SPACE && !isOver){
+        runner.jump();
+      }
+    }
+    document.onkeyup = function( event ){    
+      if(event.keyCode == SPACE && isOver){
+        start();
       }
     }
   }
@@ -644,18 +640,19 @@ var game = (function(){
   }
   
   var initScene = function(){
-    curScene = new Scene();
-    curScene.setXSpeed(speed);
-    updateScene(); 
+    updateScene();
+    updateScene();
   }
 
   var updateScene = function(){
     lastScene = curScene;
 
-    if(scenes.length == 0) return;
+    if(scenes.length == 0){
+      return;
+    };
 
     curScene = scenes[curSceneIdx];
-      curScene.reset();
+    curScene.reset();   
     curScene.transform(canvas.width + lastScene.getTransform().x, 0);
 
     if(++curSceneIdx >= scenes.length){
@@ -667,8 +664,8 @@ var game = (function(){
     var msg;
 
     context.fillStyle = 'white';
-      context.font='15px bold';
-      context.drawImage(LL.getImages().score, 3, 3, 20, 20);
+    context.font='15px bold';
+    context.drawImage(LL.getImages().score, 3, 3, 20, 20);
     context.fillText(score, 25, 20);
 
     context.drawImage(LL.getImages().hiscore, canvas.width-80, 3, 20, 20);
@@ -721,11 +718,11 @@ var game = (function(){
     init: init,
     loop: loop,
     newScene: newScene,
-      start: start,
-      getImages: LL.getImages,
-      addImages: LL.addImages,
-      loadImageAndRun: LL.loadImageAndRun,
-      speed: speed
+    start: start,
+    getImages: LL.getImages,
+    addImages: LL.addImages,
+    loadImageAndRun: LL.loadImageAndRun,
+    speed: speed
   }
 
   return mPublic;

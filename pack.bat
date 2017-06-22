@@ -1,4 +1,6 @@
-cp myGame.js dist/
-rm dist/runner.js
-cat js/util.js > runner.js
-cat js/.. > runner.js
+copy .\myGame.js .\dist\
+copy .\js\images.js .\dist\
+del .\dist\runner.js
+type .\js\util.js .\js\collision.js .\js\shape.js .\js\scene.js .\js\runner.js .\js\game.js >> .\dist\runner.js
+
+minify dist/runner.js

@@ -1,5 +1,3 @@
-"use strict";
-
 function Scene(){
 	this.shapes = new Array();
 	this.xSpeed = 0;

@@ -1,18 +1,23 @@
-"use strict";
-
 /* Runner */
 
 function Runner(){
 	Scene.call(this)
 	this.g = 1;
   this.jumpSpeed = -10; 
+  this.secondJump = false;
 }
 
 LL.inheritPrototype(Runner, Scene);
 
 Runner.prototype.jump = function(){
-	if(!this.isInAir())
+	if(!this.isInAir()){
 		this.setYSpeed(this.jumpSpeed);
+		this.secondJump = true;
+	}
+	if(this.secondJump && this.ySpeed > 0){
+		this.setYSpeed(this.jumpSpeed*0.8);
+		this.secondJump = false;
+	}
 }
 
 Runner.prototype.isInAir = function(){

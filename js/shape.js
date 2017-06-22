@@ -1,5 +1,3 @@
-"use strict";
-
 var ShapeTypes = Object.freeze({
   rect: 0,
   circle: 1,
