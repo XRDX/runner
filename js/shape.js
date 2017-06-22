@@ -6,7 +6,8 @@ var ShapeTypes = Object.freeze({
   line: 2,
   triangle: 3,
   image: 4,
-  animation: 5
+  animation: 5,
+  text: 6
 })
 
 /* Rect */
@@ -72,6 +73,10 @@ function LImage(img, x, y, w, h){
 LL.inheritPrototype(LImage, Rect);
 
 LImage.prototype.draw = function(c){
+
+  this.w = this.w || Math.floor(this.img.w / 2);
+  this.h = this.h || Math.floor(this.img.h / 2);
+
   if(c){
     c.drawImage(this.img, this.x, this.y, this.w, this.h) 
   } else {
@@ -102,11 +107,11 @@ LImage.prototype.collide = function(target){
 function Animation(img, x, y, w, h, sw, sh, n, f){
   LImage.call(this, img, x, y, w, h);
   this.type = ShapeTypes.animation;
-  this.frameMax = n;
+  this.frameMax = n || this.img.fs;
   this.currentFrame = 0;
-  this.sw = sw;
-  this.sh = sh;
-  this.animationFrame = f || 1; 
+  this.sw = sw || this.img.w;
+  this.sh = sh || this.img.h;
+  this.animationFrame = f || 5; 
 }
 
 LL.inheritPrototype(Animation, LImage);
@@ -114,6 +119,9 @@ LL.inheritPrototype(Animation, LImage);
 Animation.prototype.draw = function(c){
   var intFrame = Math.floor(this.currentFrame/this.animationFrame);
   var offsetX = this.sw * intFrame;
+
+  this.w = this.w || Math.floor(this.img.w / 2);
+  this.h = this.h || Math.floor(this.img.h / 2);
 
   if(c){
     c.drawImage(this.img, 
@@ -180,4 +188,22 @@ FillCircle.prototype.draw = function(){
   context.arc(this.x, this.y, this.r, 0, Math.PI*2, true ); 
   context.closePath();
   context.fill();
+}
+
+function Text(msg, x, y, c){
+  this.c = c || "orange";
+  this.x = x;
+  this.y = y;
+  this.msg = msg;
+}
+
+Text.prototype.draw = function(){
+  context.fillStyle = this.c;
+  context.font='15px bold';
+  context.fillText(this.msg, this.x, this.y);
+}
+
+Text.prototype.transform = function(dx, dy){
+  this.x += dx;
+  this.y += dy;
 }

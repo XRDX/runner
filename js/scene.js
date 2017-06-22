@@ -38,6 +38,11 @@ Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n, f){
 	this.shapes.push(animation);
 }
 
+Scene.prototype.text = function(msg, x, y, c){
+	var text = new Text(msg, x, y, c);
+	this.shapes.push(text);
+}
+
 Scene.prototype.draw = function(){
 	for(var i=0; i<this.shapes.length; i++){
 		this.shapes[i].draw();
