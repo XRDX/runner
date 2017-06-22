@@ -8,37 +8,44 @@ function Scene(){
 Scene.prototype.rect = function(x, y, w, h, c){
 	var rect = new Rect(x, y, w, h, c);
 	this.shapes.push(rect);
+	return this;
 }
 
 Scene.prototype.fillRect = function(x, y, w, h, c){
 	var rect = new FillRect(x, y, w, h, c);
 	this.shapes.push(rect);
+	return this;
 }
 
 
 Scene.prototype.circle = function(x, y, r, c){
 	var circle = new Circle(x, y, r, c);
 	this.shapes.push(circle);
+	return this;
 }
 
 Scene.prototype.fillCircle = function(x, y, r, c){
 	var circle = new FillCircle(x, y, r, c);
 	this.shapes.push(circle);
+	return this;
 }
 
 Scene.prototype.image = function(img, x, y, w, h){
 	var image = new LImage(img, x, y, w, h);
 	this.shapes.push(image);
+	return this;
 }
 
 Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n, f){
 	var animation = new Animation(img, x, y, w, h, sw, sy, n, f);
 	this.shapes.push(animation);
+	return this;
 }
 
 Scene.prototype.text = function(msg, x, y, c){
 	var text = new Text(msg, x, y, c);
 	this.shapes.push(text);
+	return this;
 }
 
 Scene.prototype.draw = function(){

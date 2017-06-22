@@ -65,7 +65,7 @@ var LL = (function(){
 	  var loading = function(){ 
 	    drawLoading();
 
-	    if (++loadedImages >= numImages) {    
+	    if (++loadedImages >= numImages && callback) {    
 	      callback();    
 	    }    
 	  };  
@@ -93,6 +93,7 @@ var LL = (function(){
 })();
 
 LL.addImages(images);
+LL.loadImageAndRun();
 var Collision =  (function(){
 
 	/*
@@ -412,37 +413,44 @@ function Scene(){
 Scene.prototype.rect = function(x, y, w, h, c){
 	var rect = new Rect(x, y, w, h, c);
 	this.shapes.push(rect);
+	return this;
 }
 
 Scene.prototype.fillRect = function(x, y, w, h, c){
 	var rect = new FillRect(x, y, w, h, c);
 	this.shapes.push(rect);
+	return this;
 }
 
 
 Scene.prototype.circle = function(x, y, r, c){
 	var circle = new Circle(x, y, r, c);
 	this.shapes.push(circle);
+	return this;
 }
 
 Scene.prototype.fillCircle = function(x, y, r, c){
 	var circle = new FillCircle(x, y, r, c);
 	this.shapes.push(circle);
+	return this;
 }
 
 Scene.prototype.image = function(img, x, y, w, h){
 	var image = new LImage(img, x, y, w, h);
 	this.shapes.push(image);
+	return this;
 }
 
 Scene.prototype.animation = function(img, x, y, w, h, sw, sy, n, f){
 	var animation = new Animation(img, x, y, w, h, sw, sy, n, f);
 	this.shapes.push(animation);
+	return this;
 }
 
 Scene.prototype.text = function(msg, x, y, c){
 	var text = new Text(msg, x, y, c);
 	this.shapes.push(text);
+	return this;
 }
 
 Scene.prototype.draw = function(){
@@ -518,7 +526,7 @@ Runner.prototype.jump = function(){
 		this.setYSpeed(this.jumpSpeed);
 		this.secondJump = true;
 	}
-	if(this.secondJump && this.ySpeed > 0){
+	if(this.secondJump && this.ySpeed > this.jumpSpeed*0.5){
 		this.setYSpeed(this.jumpSpeed*0.8);
 		this.secondJump = false;
 	}
@@ -547,7 +555,7 @@ Runner.prototype.setJumpSpeed = function(speed){
   this.jumpSpeed = speed; 
 }
 // runner
-var game = (function(){
+LL.RunnerGame = function(){
 
   var runner;
 
@@ -587,24 +595,24 @@ var game = (function(){
 
 
   var initBg = function(){
-  bg1 = new Scene();
-  bg1.setXSpeed(speed/5);
-  bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
+    bg1 = new Scene();
+    bg1.setXSpeed(speed/5);
+    bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
 
-  bg2 = new Scene();
-  bg2.setXSpeed(speed/5);
-  bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
-  bg2.transform(canvas.width, 0);
+    bg2 = new Scene();
+    bg2.setXSpeed(speed/5);
+    bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
+    bg2.transform(canvas.width, 0);
 
-  g1 = new Scene();
-  g1.setXSpeed(speed);
-  g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
+    g1 = new Scene();
+    g1.setXSpeed(speed);
+    g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
 
 
-  g2 = new Scene();
-  g2.setXSpeed(speed);
-  g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
-  g2.transform(canvas.width, 0);
+    g2 = new Scene();
+    g2.setXSpeed(speed);
+    g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
+    g2.transform(canvas.width, 0);
   }
 
   var initRunner = function(){
@@ -726,4 +734,4 @@ var game = (function(){
   }
 
   return mPublic;
-})();
+};

@@ -14,7 +14,7 @@ Runner.prototype.jump = function(){
 		this.setYSpeed(this.jumpSpeed);
 		this.secondJump = true;
 	}
-	if(this.secondJump && this.ySpeed > 0){
+	if(this.secondJump && this.ySpeed > this.jumpSpeed*0.5){
 		this.setYSpeed(this.jumpSpeed*0.8);
 		this.secondJump = false;
 	}

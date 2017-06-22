@@ -65,7 +65,7 @@ var LL = (function(){
 	  var loading = function(){ 
 	    drawLoading();
 
-	    if (++loadedImages >= numImages) {    
+	    if (++loadedImages >= numImages && callback) {    
 	      callback();    
 	    }    
 	  };  
@@ -93,3 +93,4 @@ var LL = (function(){
 })();
 
 LL.addImages(images);
+LL.loadImageAndRun();

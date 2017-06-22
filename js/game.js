@@ -1,5 +1,5 @@
 // runner
-var game = (function(){
+LL.RunnerGame = function(){
 
   var runner;
 
@@ -39,24 +39,24 @@ var game = (function(){
 
 
   var initBg = function(){
-  bg1 = new Scene();
-  bg1.setXSpeed(speed/5);
-  bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
+    bg1 = new Scene();
+    bg1.setXSpeed(speed/5);
+    bg1.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
 
-  bg2 = new Scene();
-  bg2.setXSpeed(speed/5);
-  bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
-  bg2.transform(canvas.width, 0);
+    bg2 = new Scene();
+    bg2.setXSpeed(speed/5);
+    bg2.image(IMAGES.bg, 0, 0, canvas.width, canvas.height);
+    bg2.transform(canvas.width, 0);
 
-  g1 = new Scene();
-  g1.setXSpeed(speed);
-  g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
+    g1 = new Scene();
+    g1.setXSpeed(speed);
+    g1.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
 
 
-  g2 = new Scene();
-  g2.setXSpeed(speed);
-  g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
-  g2.transform(canvas.width, 0);
+    g2 = new Scene();
+    g2.setXSpeed(speed);
+    g2.image(IMAGES.ground, 0, 220, canvas.width+10, canvas.height-220);
+    g2.transform(canvas.width, 0);
   }
 
   var initRunner = function(){
@@ -178,4 +178,4 @@ var game = (function(){
   }
 
   return mPublic;
-})();
+};
