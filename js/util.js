@@ -83,14 +83,34 @@ var LL = (function(){
 	  drawLoading(); 
 	}
 
-  	return {
-	    inheritPrototype: inheritPrototype,
-	    loadImageAndRun: loadImageAndRun,
-	    addImages: addImages,
-	    getImages: getImages
-  	}
+	var MUSIC = {};
+
+	var initMusics = function(){
+		MUSIC.jump  = document.getElementById('jump');
+		MUSIC.jump2 = document.getElementById('jump2'); 
+		MUSIC.collision = document.getElementById('collision'); 
+		MUSIC.bgm = document.getElementById('bgm');
+	}
+
+	var getMusics = function(){
+		return MUSIC;
+	}
+
+	return {
+    inheritPrototype: inheritPrototype,
+    loadImageAndRun: loadImageAndRun,
+    addImages: addImages,
+    getImages: getImages,
+    initMusics: initMusics,
+    getMusics: getMusics
+	}
 
 })();
 
 LL.addImages(images);
+LL.initMusics();
 LL.loadImageAndRun();
+
+var MUSIC = LL.getMusics();
+
+

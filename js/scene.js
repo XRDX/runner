@@ -99,8 +99,10 @@ Scene.prototype.loop = function(){
 Scene.prototype.collide = function(otherScene){
 	for(var i=0; i<this.shapes.length; i++){
 		for(var j=0; j<otherScene.shapes.length; j++){
-			if(this.shapes[i].collide(otherScene.shapes[j]))
+			if(this.shapes[i].collide(otherScene.shapes[j])){
+				MUSIC.collision.play();
 				return true;
+			}
 		}
 	}
 	return false;

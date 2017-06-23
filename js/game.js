@@ -29,6 +29,8 @@ LL.RunnerGame = function(){
     lastScene.transform(canvas.width);
     curScene.transform(canvas.width * 2);
 
+    MUSIC.bgm.play();
+
     window.requestAnimationFrame(loop, canvas);
   }
 

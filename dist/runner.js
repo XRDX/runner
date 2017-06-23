@@ -83,17 +83,37 @@ var LL = (function(){
 	  drawLoading(); 
 	}
 
-  	return {
-	    inheritPrototype: inheritPrototype,
-	    loadImageAndRun: loadImageAndRun,
-	    addImages: addImages,
-	    getImages: getImages
-  	}
+	var MUSIC = {};
+
+	var initMusics = function(){
+		MUSIC.jump  = document.getElementById('jump');
+		MUSIC.jump2 = document.getElementById('jump2'); 
+		MUSIC.collision = document.getElementById('collision'); 
+		MUSIC.bgm = document.getElementById('bgm');
+	}
+
+	var getMusics = function(){
+		return MUSIC;
+	}
+
+	return {
+    inheritPrototype: inheritPrototype,
+    loadImageAndRun: loadImageAndRun,
+    addImages: addImages,
+    getImages: getImages,
+    initMusics: initMusics,
+    getMusics: getMusics
+	}
 
 })();
 
 LL.addImages(images);
+LL.initMusics();
 LL.loadImageAndRun();
+
+var MUSIC = LL.getMusics();
+
+
 var Collision =  (function(){
 
 	/*
@@ -504,8 +524,10 @@ Scene.prototype.loop = function(){
 Scene.prototype.collide = function(otherScene){
 	for(var i=0; i<this.shapes.length; i++){
 		for(var j=0; j<otherScene.shapes.length; j++){
-			if(this.shapes[i].collide(otherScene.shapes[j]))
+			if(this.shapes[i].collide(otherScene.shapes[j])){
+				MUSIC.collision.play();
 				return true;
+			}
 		}
 	}
 	return false;
@@ -524,10 +546,12 @@ LL.inheritPrototype(Runner, Scene);
 Runner.prototype.jump = function(){
 	if(!this.isInAir()){
 		this.setYSpeed(this.jumpSpeed);
+		MUSIC.jump.play();
 		this.secondJump = true;
 	}
 	if(this.secondJump && this.ySpeed > this.jumpSpeed*0.5){
 		this.setYSpeed(this.jumpSpeed*0.8);
+		MUSIC.jump2.play();
 		this.secondJump = false;
 	}
 }
@@ -584,6 +608,8 @@ LL.RunnerGame = function(){
     
     lastScene.transform(canvas.width);
     curScene.transform(canvas.width * 2);
+
+    MUSIC.bgm.play();
 
     window.requestAnimationFrame(loop, canvas);
   }

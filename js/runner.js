@@ -12,10 +12,12 @@ LL.inheritPrototype(Runner, Scene);
 Runner.prototype.jump = function(){
 	if(!this.isInAir()){
 		this.setYSpeed(this.jumpSpeed);
+		MUSIC.jump.play();
 		this.secondJump = true;
 	}
 	if(this.secondJump && this.ySpeed > this.jumpSpeed*0.5){
 		this.setYSpeed(this.jumpSpeed*0.8);
+		MUSIC.jump2.play();
 		this.secondJump = false;
 	}
 }
