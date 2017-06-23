@@ -77,6 +77,24 @@ LL.RunnerGame = function(){
         runner.jump();
       }
     }
+    document.ontouchstart = function( event ){
+      if(!isOver){
+        runner.jump();
+      }
+    }
+    document.onmousedown = function(event){
+      if(!isOver){
+        runner.jump();
+      } else {
+        start();
+      }
+    }
+
+    document.ontouchend = function( event ){
+      if(isOver){
+        start();
+      }
+    }
     document.onkeyup = function( event ){    
       if(event.keyCode == SPACE && isOver){
         start();
