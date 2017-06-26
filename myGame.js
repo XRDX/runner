@@ -29,7 +29,7 @@ game.newScene()
 
 game.newScene()
   .animation(IMAGES.crabAni, 300, 177)
-  .animation(IMAGES.crabAni, 400, 177)
+  .animation(IMAGES.crabAni, 400, 200)
   .animation(IMAGES.crabAni, 500, 177);
 
 game.newScene()

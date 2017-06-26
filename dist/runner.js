@@ -725,7 +725,7 @@ LL.RunnerGame = function(){
   
   var initScene = function(){
     // at least 2 empty scenes
-    for(; scenes.length <= 2; ){
+    for(; scenes.length < 2; ){
       newScene();
     }
     updateScene();
