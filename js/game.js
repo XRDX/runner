@@ -13,6 +13,7 @@ LL.RunnerGame = function(){
   var highScore = 0;
 
   var scenes = [];
+
   var curSceneIdx = 0;
   var curScene = new Scene();
   var lastScene = new Scene();
@@ -70,12 +71,9 @@ LL.RunnerGame = function(){
     runner.setJumpSpeed(-10); 
   }
 
-  var init = function(){
-    initBg();
-    initRunner();
-    initScene();
+  var initKeyBind = function(){
     document.onkeydown = function( event ){
-      if(event.keyCode == SPACE && !isOver){
+      if(event.keyCode && !isOver){
         runner.jump();
       }
     }
@@ -104,26 +102,33 @@ LL.RunnerGame = function(){
     }
   }
 
+  var init = function(){
+    initBg();
+    initRunner();
+    initScene();
+    initKeyBind();
+  }
+
   var newScene = function(){
     var scene = new Scene();
-      scene.setXSpeed(speed); 
+    scene.setXSpeed(speed); 
     scenes.push(scene); 
     return scene;
   }
   
   var initScene = function(){
+    // at least 2 empty scenes
+    for(; scenes.length <= 2; ){
+      newScene();
+    }
     updateScene();
     updateScene();
   }
 
   var updateScene = function(){
     lastScene = curScene;
-
-    if(scenes.length == 0){
-      return;
-    };
-
     curScene = scenes[curSceneIdx];
+
     curScene.reset();   
     curScene.transform(canvas.width + lastScene.getTransform().x, 0);
 
@@ -154,13 +159,14 @@ LL.RunnerGame = function(){
     //context.clearRect(0, 0, canvas.width, canvas.height);
     bg1.loop();
     bg2.loop();
-    g1.loop();
-    g2.loop();
 
     curScene.run();
     lastScene.run();
     if(lastScene.getTransform().x < -canvas.width)
       updateScene();
+
+    g1.loop();
+    g2.loop();
 
     runner.update();
     runner.draw();
