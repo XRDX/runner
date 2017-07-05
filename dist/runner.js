@@ -626,6 +626,7 @@ LL.RunnerGame = function(){
   var lastScene = new Scene();
 
   var bg1, bg2, g1, g2;
+  var isTest;
 
   var start = function(){
     isOver = false;
@@ -775,14 +776,14 @@ LL.RunnerGame = function(){
     g1.loop();
     g2.loop();
 
-    runner.update();
-    runner.draw();
+    if(!isTest){
+      runner.update();
+      runner.draw();
+      if(runner.collide(curScene) || runner.collide(lastScene))
+        stop()
+    }
 
     score += 1;
-
-    if(isCollision()){
-      stop();
-    }
   }
 
   var loop = function(){
@@ -793,10 +794,22 @@ LL.RunnerGame = function(){
     }
   }
 
-  var isCollision = function(){
-    if(runner.collide(curScene) || runner.collide(lastScene))
-      return true;
-    return false
+  var testScene = new Scene();
+  var test = function(scene){
+    initBg();
+    testScene = scene;
+    testLoop();
+  }
+
+  var testLoop = function(){
+    bg1.draw();
+    testScene.draw();
+    g1.draw();
+    requestAnimationFrame(testLoop);
+  }
+
+  var testRun = function(){
+    isTest = true;
   }
 
   var mPublic = {
@@ -807,7 +820,9 @@ LL.RunnerGame = function(){
     getImages: LL.getImages,
     addImages: LL.addImages,
     loadImageAndRun: LL.loadImageAndRun,
-    speed: speed
+    speed: speed,
+    test: test,
+    testRun: testRun
   }
 
   return mPublic;
